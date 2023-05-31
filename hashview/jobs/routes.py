@@ -9,6 +9,8 @@ import os
 import time
 import secrets
 import json
+import logging
+import builtins
 
 jobs = Blueprint('jobs', __name__)
 
@@ -425,6 +427,8 @@ def jobs_start(job_id):
 
             db.session.commit()
             flash('Job has been Started!', 'success')
+            if(builtins.state == 'debug'):
+                flash('Running command:\n' + job_task.command, 'info')
             return redirect(url_for('main.home'))
         else:
             flash('You do not have rights to start this job!', 'danger')
